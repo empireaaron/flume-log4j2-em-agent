@@ -33,45 +33,45 @@ public abstract class AbstractConfiguration {
         conf.putAll(this.getCollectChannelConf(flumeAgentConfig.getChannel()));
         conf.putAll(this.getCollectSinkConf(flumeAgentConfig.getSink()));
         conf.put("agent.name", this.getName());
-        conf.put("lcd", flumeAgentConfig.getChannel().getLocal_cache_dir());
+        conf.put("lcd", flumeAgentConfig.getChannel().getLocalCacheDir());
         return conf;
     }
 
     private Map<String, String> getCollectChannelConf(FlumeChannel channel) {
         Map<String, String> conf = new HashMap<>(8);
         conf.put("channel.type", "file");
-        conf.put("channel.capacity", String.valueOf(channel.getLocal_cache_capacity()));
-        conf.put("channel.minimumRequiredSpace", String.valueOf(channel.getLocal_cache_min_storage_space()));
-        conf.put("channel.maxFileSize", channel.getLocal_cache_max_file_size());
-        if (StringUtils.isBlank(channel.getLocal_cache_dir())) {
+        conf.put("channel.capacity", String.valueOf(channel.getLocalCacheCapacity()));
+        conf.put("channel.minimumRequiredSpace", String.valueOf(channel.getLocalCacheMinStorageSpace()));
+        conf.put("channel.maxFileSize", channel.getLocalCacheMaxFileSize());
+        if (StringUtils.isBlank(channel.getLocalCacheDir())) {
             throw new FlumeException(this.getName() + " local_cache_dir is empty!");
         }
-        if (channel.getLocal_cache_data_dir_num() < 4) {
+        if (channel.getLocalCacheDataDirNum() < 4) {
             throw new FlumeException(this.getName() + " local_cache_data_dir_num < 4 !");
         }
-        String[] dataDirArr = new String[channel.getLocal_cache_data_dir_num()];
+        String[] dataDirArr = new String[channel.getLocalCacheDataDirNum()];
 
-        for (int i = 0; i < channel.getLocal_cache_data_dir_num(); ++i) {
-            dataDirArr[i] = channel.getLocal_cache_dir() + '/' + "data" + i;
+        for (int i = 0; i < channel.getLocalCacheDataDirNum(); ++i) {
+            dataDirArr[i] = channel.getLocalCacheDir() + '/' + "data" + i;
         }
 
         String dataDirs = StringUtils.join(dataDirArr, ',');
         conf.put("channel.dataDirs", dataDirs);
-        String checkpointDir = channel.getLocal_cache_dir() + '/' + "checkpoint";
+        String checkpointDir = channel.getLocalCacheDir() + '/' + "checkpoint";
         conf.put("channel.checkpointDir", checkpointDir);
-        conf.put("channel.checkpointInterval", String.valueOf(channel.getLocal_cache_checkpoint_interval()));
-        if (channel.isLocal_cache_backup_checkpoint()) {
+        conf.put("channel.checkpointInterval", String.valueOf(channel.getLocalCacheCheckpointInterval()));
+        if (channel.isLocalCacheBackupCheckpoint()) {
             conf.put("channel.useDualCheckpoints", String.valueOf(true));
-            String backupCheckpointDir = channel.getLocal_cache_dir() + '/' + "backupCheckpoint";
+            String backupCheckpointDir = channel.getLocalCacheDir() + '/' + "backupCheckpoint";
             conf.put("channel.backupCheckpointDir", backupCheckpointDir);
         }
 
-        if (!channel.isLocal_cache_checkpoint_on_close()) {
-            conf.put("channel.checkpointOnClose", String.valueOf(channel.isLocal_cache_checkpoint_on_close()));
+        if (!channel.isLocalCacheCheckpointOnClose()) {
+            conf.put("channel.checkpointOnClose", String.valueOf(channel.isLocalCacheCheckpointOnClose()));
         }
 
-        conf.put("channel.transactionCapacity", String.valueOf(channel.getLocal_cache_transaction_capacity()));
-        conf.put("channel.keep-alive", String.valueOf(channel.getLocal_cache_request_timeout()));
+        conf.put("channel.transactionCapacity", String.valueOf(channel.getLocalCacheTransactionCapacity()));
+        conf.put("channel.keep-alive", String.valueOf(channel.getLocalCacheRequestTimeout()));
         Map<String, String> specificConf = this.collectSpecificChannelConf();
         if (specificConf != null) {
             conf.putAll(specificConf);
@@ -95,21 +95,21 @@ public abstract class AbstractConfiguration {
             conf.put(sinkName + ".type", "avro");
             conf.put(sinkName + ".hostname", a);
             conf.put(sinkName + ".port", p);
-            conf.put(sinkName + ".batch-size", String.valueOf(sink.getServers_transaction_capacity()));
-            conf.put(sinkName + ".maxIoWorkers", String.valueOf(sink.getServers_max_io_workers()));
-            conf.put(sinkName + ".connect-timeout", String.valueOf(sink.getServers_connect_timeout()));
-            conf.put(sinkName + ".request-timeout", String.valueOf(sink.getServers_request_timeout()));
+            conf.put(sinkName + ".batch-size", String.valueOf(sink.getServersTransactionCapacity()));
+            conf.put(sinkName + ".maxIoWorkers", String.valueOf(sink.getServersMaxIoWorkers()));
+            conf.put(sinkName + ".connect-timeout", String.valueOf(sink.getServersConnectTimeout()));
+            conf.put(sinkName + ".request-timeout", String.valueOf(sink.getServersRequestTimeout()));
         }
 
         conf.put("sinks", StringUtils.join(sinkArr, ' '));
         if (totalServer == 1) {
             conf.put("processor.type", "failover");
-            conf.put("processor.maxpenalty", String.valueOf(sink.getServers_max_backoff()));
+            conf.put("processor.maxpenalty", String.valueOf(sink.getServersMaxBackoff()));
         } else {
             conf.put("processor.type", "load_balance");
-            conf.put("processor.selector", sink.getServers_load_balance());
+            conf.put("processor.selector", sink.getServersLoadBalance());
             conf.put("processor.backoff", "true");
-            conf.put("processor.selector.maxTimeOut", String.valueOf(sink.getServers_max_backoff()));
+            conf.put("processor.selector.maxTimeOut", String.valueOf(sink.getServersMaxBackoff()));
         }
 
         Map<String, String> specificConf = this.collectSpecificSinkConf();

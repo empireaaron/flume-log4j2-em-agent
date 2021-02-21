@@ -126,7 +126,7 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
     @PluginFactory
     public static Log4j2EmAgentAppender createLog4j2EmAgentAppender(@PluginAttribute("name") String name,
         @PluginAttribute("appName") String appName, @PluginAttribute("servers") String servers,
-        @PluginAttribute("sourceIp") String sourceIp, @PluginAttribute("local_cache_dir") String local_cache_dir,
+        @PluginAttribute("sourceIp") String sourceIp, @PluginAttribute("local_cache_dir") String localCacheDir,
         @PluginAttribute(value = "debug", defaultBoolean = false) boolean debug,
         @PluginAttribute(value = "agentNum", defaultInt = 1) int agentNum,
         @PluginAttribute(value = "writeLogLocation", defaultBoolean = true) boolean writeLogLocation,
@@ -142,8 +142,8 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
         if (StringUtils.isNotBlank(servers)) {
             flumeAgentConfig.getSink().setServers(servers);
         }
-        if (StringUtils.isNotBlank(local_cache_dir)) {
-            flumeAgentConfig.getChannel().setLocal_cache_dir(local_cache_dir);
+        if (StringUtils.isNotBlank(localCacheDir)) {
+            flumeAgentConfig.getChannel().setLocalCacheDir(localCacheDir);
         }
         // flume config check
         if (!flumeAgentConfig.checkConf()) {
@@ -165,7 +165,7 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
         StringBuffer sb = new StringBuffer();
         sb.append("\n\n").append("name=").append(name).append('\n').append("appName=").append(appName).append('\n')
             .append("servers=").append(servers).append('\n').append("sourceIp=").append(sourceIp).append('\n')
-            .append("local_cache_dir=").append(local_cache_dir).append('\n').append("debug=").append(debug).append('\n')
+            .append("local_cache_dir=").append(localCacheDir).append('\n').append("debug=").append(debug).append('\n')
             .append("writeLogLocation=").append(writeLogLocation).append('\n').append(flumeAgentConfig).append('\n');
 
         if (!logConfig) {

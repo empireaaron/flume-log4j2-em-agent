@@ -44,7 +44,7 @@ public final class FlumeAgentConfig {
     @PluginFactory
     public static FlumeAgentConfig createFlumeAgentConfig(@PluginElement("channel") FlumeChannel channel,
         @PluginElement("sink") FlumeSink sink, @PluginAttribute("servers") String servers,
-        @PluginAttribute("local_cache_dir") String local_cache_dir) {
+        @PluginAttribute("local_cache_dir") String localCacheDir) {
         if (channel == null) {
             logger.warn("flume channel config cannot be null, it will initialize by default");
             channel = new FlumeChannel();
@@ -56,8 +56,8 @@ public final class FlumeAgentConfig {
         if (StringUtils.isNotBlank(servers)) {
             sink.setServers(servers);
         }
-        if (StringUtils.isNotBlank(local_cache_dir)) {
-            channel.setLocal_cache_dir(local_cache_dir);
+        if (StringUtils.isNotBlank(localCacheDir)) {
+            channel.setLocalCacheDir(localCacheDir);
         }
         return new FlumeAgentConfig(channel, sink);
     }
@@ -69,8 +69,8 @@ public final class FlumeAgentConfig {
 
     public boolean checkConf() {
         String servers = this.getSink().getServers();
-        String channel = this.getChannel().getLocal_cache_dir();;
-        return StringUtils.isNotBlank(servers) && StringUtils.isNotBlank(channel);
+        String localCacheDir = this.getChannel().getLocalCacheDir();;
+        return StringUtils.isNotBlank(servers) && StringUtils.isNotBlank(localCacheDir);
     }
 
 }

@@ -14,145 +14,150 @@ import org.apache.logging.log4j.status.StatusLogger;
  */
 @Plugin(name = "channel", category = "Core", printObject = true)
 public class FlumeChannel {
-    private static final Logger logger = StatusLogger.getLogger();
-    private String local_cache_dir;
-    private int local_cache_capacity = 10000000;
-    private int local_cache_min_storage_space = 524288000;
-    private String local_cache_max_file_size = "134217728";
+    private String localCacheDir;
+    private int localCacheCapacity = 10000000;
+    private int localCacheMinStorageSpace = 524288000;
+    private String localCacheMaxFileSize = "134217728";
 
-    private int local_cache_data_dir_num = 4;
+    private int localCacheDataDirNum = 4;
 
-    private long local_cache_checkpoint_interval = 30000L;
-    private boolean local_cache_backup_checkpoint = true;
-    private boolean local_cache_checkpoint_on_close = false;
-    private int local_cache_transaction_capacity = 6000;
-    private int local_cache_request_timeout = 10;
+    private long localCacheCheckpointInterval = 30000L;
+    private boolean localCacheBackupCheckpoint = true;
+    private boolean localCacheCheckpointOnClose = false;
+    private int localCacheTransactionCapacity = 6000;
+    private int localCacheRequestTimeout = 10;
 
     public FlumeChannel() {}
 
-    public FlumeChannel(String local_cache_dir) {
-        this.local_cache_dir = local_cache_dir;
+    public FlumeChannel(String localCacheDir) {
+        this.localCacheDir = localCacheDir;
     }
 
     @PluginFactory
-    public static FlumeChannel createFlumeChannel(@PluginAttribute("local_cache_dir") String local_cache_dir,
-        @PluginAttribute(value = "local_cache_capacity", defaultInt = 10000000) int local_cache_capacity,
+    public static FlumeChannel createFlumeChannel(@PluginAttribute("local_cache_dir") String localCacheDir,
+        @PluginAttribute(value = "local_cache_capacity", defaultInt = 10000000) int localCacheCapacity,
         @PluginAttribute(value = "local_cache_min_storage_space",
-            defaultInt = 524288000) int local_cache_min_storage_space,
+            defaultInt = 524288000) int localCacheMinStorageSpace,
         @PluginAttribute(value = "local_cache_max_file_size",
-            defaultString = "134217728") String local_cache_max_file_size,
-        @PluginAttribute(value = "local_cache_data_dir_num", defaultInt = 4) int local_cache_data_dir_num,
+            defaultString = "134217728") String localCacheMaxFileSize,
+        @PluginAttribute(value = "local_cache_data_dir_num", defaultInt = 4) int localCacheDataDirNum,
         @PluginAttribute(value = "local_cache_checkpoint_interval",
-            defaultLong = 30000L) long local_cache_checkpoint_interval,
+            defaultLong = 30000L) long localCacheCheckpointInterval,
         @PluginAttribute(value = "local_cache_backup_checkpoint",
-            defaultBoolean = true) boolean local_cache_backup_checkpoint,
+            defaultBoolean = true) boolean localCacheBackupCheckpoint,
         @PluginAttribute(value = "local_cache_checkpoint_on_close",
-            defaultBoolean = false) boolean local_cache_checkpoint_on_close,
+            defaultBoolean = false) boolean localCacheCheckpointOnClose,
         @PluginAttribute(value = "local_cache_transaction_capacity",
-            defaultInt = 6000) int local_cache_transaction_capacity,
-        @PluginAttribute(value = "local_cache_request_timeout", defaultInt = 10) int local_cache_request_timeout) {
-        FlumeChannel channel = new FlumeChannel(local_cache_dir);
-        channel.local_cache_capacity = local_cache_capacity;
-        channel.local_cache_min_storage_space = local_cache_min_storage_space;
-        channel.local_cache_max_file_size = local_cache_max_file_size;
-        channel.local_cache_data_dir_num = local_cache_data_dir_num;
-        channel.local_cache_checkpoint_interval = local_cache_checkpoint_interval;
-        channel.local_cache_backup_checkpoint = local_cache_backup_checkpoint;
-        channel.local_cache_checkpoint_on_close = local_cache_checkpoint_on_close;
-        channel.local_cache_transaction_capacity = local_cache_transaction_capacity;
-        channel.local_cache_request_timeout = local_cache_request_timeout;
+            defaultInt = 6000) int localCacheTransactionCapacity,
+        @PluginAttribute(value = "local_cache_request_timeout", defaultInt = 10) int localCacheRequestTimeout) {
+        FlumeChannel channel = new FlumeChannel(localCacheDir);
+        channel.localCacheCapacity = localCacheCapacity;
+        channel.localCacheMinStorageSpace = localCacheMinStorageSpace;
+        channel.localCacheMaxFileSize = localCacheMaxFileSize;
+        channel.localCacheDataDirNum = localCacheDataDirNum;
+        channel.localCacheCheckpointInterval = localCacheCheckpointInterval;
+        channel.localCacheBackupCheckpoint = localCacheBackupCheckpoint;
+        channel.localCacheCheckpointOnClose = localCacheCheckpointOnClose;
+        channel.localCacheTransactionCapacity = localCacheTransactionCapacity;
+        channel.localCacheRequestTimeout = localCacheRequestTimeout;
         return channel;
     }
 
     @Override
     public String toString() {
-        return "FlumeChannel{" + "local_cache_dir='" + local_cache_dir + '\'' + ", local_cache_capacity="
-            + local_cache_capacity + ", local_cache_min_storage_space=" + local_cache_min_storage_space
-            + ", local_cache_max_file_size='" + local_cache_max_file_size + '\'' + ", local_cache_data_dir_num="
-            + local_cache_data_dir_num + ", local_cache_checkpoint_interval=" + local_cache_checkpoint_interval
-            + ", local_cache_backup_checkpoint=" + local_cache_backup_checkpoint + ", local_cache_checkpoint_on_close="
-            + local_cache_checkpoint_on_close + ", local_cache_transaction_capacity=" + local_cache_transaction_capacity
-            + ", local_cache_request_timeout=" + local_cache_request_timeout + '}';
+        return "FlumeChannel{" +
+                "localCacheDir='" + localCacheDir + '\'' +
+                ", localCacheCapacity=" + localCacheCapacity +
+                ", localCacheMinStorageSpace=" + localCacheMinStorageSpace +
+                ", localCacheMaxFileSize='" + localCacheMaxFileSize + '\'' +
+                ", localCacheDataDirNum=" + localCacheDataDirNum +
+                ", localCacheCheckpointInterval=" + localCacheCheckpointInterval +
+                ", localCacheBackupCheckpoint=" + localCacheBackupCheckpoint +
+                ", localCacheCheckpointOnClose=" + localCacheCheckpointOnClose +
+                ", localCacheTransactionCapacity=" + localCacheTransactionCapacity +
+                ", localCacheRequestTimeout=" + localCacheRequestTimeout +
+                '}';
     }
 
-    public void setLocal_cache_dir(String local_cache_dir) {
-        this.local_cache_dir = local_cache_dir;
+
+
+    public String getLocalCacheDir() {
+        return localCacheDir;
     }
 
-    public String getLocal_cache_dir() {
-        return local_cache_dir;
+    public void setLocalCacheDir(String localCacheDir) {
+        this.localCacheDir = localCacheDir;
     }
 
-    public int getLocal_cache_capacity() {
-        return local_cache_capacity;
+    public int getLocalCacheCapacity() {
+        return localCacheCapacity;
     }
 
-    public void setLocal_cache_capacity(int local_cache_capacity) {
-        this.local_cache_capacity = local_cache_capacity;
+    public void setLocalCacheCapacity(int localCacheCapacity) {
+        this.localCacheCapacity = localCacheCapacity;
     }
 
-    public int getLocal_cache_min_storage_space() {
-        return local_cache_min_storage_space;
+    public int getLocalCacheMinStorageSpace() {
+        return localCacheMinStorageSpace;
     }
 
-    public void setLocal_cache_min_storage_space(int local_cache_min_storage_space) {
-        this.local_cache_min_storage_space = local_cache_min_storage_space;
+    public void setLocalCacheMinStorageSpace(int localCacheMinStorageSpace) {
+        this.localCacheMinStorageSpace = localCacheMinStorageSpace;
     }
 
-    public String getLocal_cache_max_file_size() {
-        return local_cache_max_file_size;
+    public String getLocalCacheMaxFileSize() {
+        return localCacheMaxFileSize;
     }
 
-    public void setLocal_cache_max_file_size(String local_cache_max_file_size) {
-        this.local_cache_max_file_size = local_cache_max_file_size;
+    public void setLocalCacheMaxFileSize(String localCacheMaxFileSize) {
+        this.localCacheMaxFileSize = localCacheMaxFileSize;
     }
 
-    public int getLocal_cache_data_dir_num() {
-        return local_cache_data_dir_num;
+    public int getLocalCacheDataDirNum() {
+        return localCacheDataDirNum;
     }
 
-    public void setLocal_cache_data_dir_num(int local_cache_data_dir_num) {
-        this.local_cache_data_dir_num = local_cache_data_dir_num;
+    public void setLocalCacheDataDirNum(int localCacheDataDirNum) {
+        this.localCacheDataDirNum = localCacheDataDirNum;
     }
 
-    public long getLocal_cache_checkpoint_interval() {
-        return local_cache_checkpoint_interval;
+    public long getLocalCacheCheckpointInterval() {
+        return localCacheCheckpointInterval;
     }
 
-    public void setLocal_cache_checkpoint_interval(long local_cache_checkpoint_interval) {
-        this.local_cache_checkpoint_interval = local_cache_checkpoint_interval;
+    public void setLocalCacheCheckpointInterval(long localCacheCheckpointInterval) {
+        this.localCacheCheckpointInterval = localCacheCheckpointInterval;
     }
 
-    public boolean isLocal_cache_backup_checkpoint() {
-        return local_cache_backup_checkpoint;
+    public boolean isLocalCacheBackupCheckpoint() {
+        return localCacheBackupCheckpoint;
     }
 
-    public void setLocal_cache_backup_checkpoint(boolean local_cache_backup_checkpoint) {
-        this.local_cache_backup_checkpoint = local_cache_backup_checkpoint;
+    public void setLocalCacheBackupCheckpoint(boolean localCacheBackupCheckpoint) {
+        this.localCacheBackupCheckpoint = localCacheBackupCheckpoint;
     }
 
-    public boolean isLocal_cache_checkpoint_on_close() {
-        return local_cache_checkpoint_on_close;
+    public boolean isLocalCacheCheckpointOnClose() {
+        return localCacheCheckpointOnClose;
     }
 
-    public void setLocal_cache_checkpoint_on_close(boolean local_cache_checkpoint_on_close) {
-        this.local_cache_checkpoint_on_close = local_cache_checkpoint_on_close;
+    public void setLocalCacheCheckpointOnClose(boolean localCacheCheckpointOnClose) {
+        this.localCacheCheckpointOnClose = localCacheCheckpointOnClose;
     }
 
-    public int getLocal_cache_transaction_capacity() {
-        return local_cache_transaction_capacity;
+    public int getLocalCacheTransactionCapacity() {
+        return localCacheTransactionCapacity;
     }
 
-    public void setLocal_cache_transaction_capacity(int local_cache_transaction_capacity) {
-        this.local_cache_transaction_capacity = local_cache_transaction_capacity;
+    public void setLocalCacheTransactionCapacity(int localCacheTransactionCapacity) {
+        this.localCacheTransactionCapacity = localCacheTransactionCapacity;
     }
 
-    public int getLocal_cache_request_timeout() {
-        return local_cache_request_timeout;
+    public int getLocalCacheRequestTimeout() {
+        return localCacheRequestTimeout;
     }
 
-    public void setLocal_cache_request_timeout(int local_cache_request_timeout) {
-        this.local_cache_request_timeout = local_cache_request_timeout;
+    public void setLocalCacheRequestTimeout(int localCacheRequestTimeout) {
+        this.localCacheRequestTimeout = localCacheRequestTimeout;
     }
-
 }
