@@ -99,7 +99,7 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
             disruptor.setDefaultExceptionHandler(new EventExceptionHandler());
             disruptor.handleEventsWith(eventHandler);
             disruptor.start();
-            logger.info("flume-log4j2-em-client KafkaAppender disruptor Started.");
+            logger.info("flume-log4j2-em-agent KafkaAppender disruptor Started.");
             RingBuffer<LogEventWrapper> ringBuffer = disruptor.getRingBuffer();
             LogEventWrapperProducerWithTranslator producer =
                 new LogEventWrapperProducerWithTranslator(ringBuffer, writeLogLocation);
@@ -109,11 +109,11 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
                 @Override
                 public void run() {
                     disruptor.shutdown();
-                    logger.info("flume-log4j2-em-client KafkaAppender disruptor.shutdown");
+                    logger.info("flume-log4j2-em-agent KafkaAppender disruptor.shutdown");
                 }
             }));
 
-            logger.info("日志系统:flume-log4j2-em-client KafkaAppender Started!!!");
+            logger.info("日志系统:flume-log4j2-em-agent KafkaAppender Started!!!");
         }
         super.start();
     }
