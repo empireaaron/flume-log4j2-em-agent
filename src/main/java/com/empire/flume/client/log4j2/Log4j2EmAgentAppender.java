@@ -26,16 +26,16 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
 /**
- * kafka appender将日志收集到kafka
+ * flume agent appender,collect logs to flume
  * 
  * @author aaron.xu
  */
 @Plugin(name = "Log4j2EmAgentAppender", category = "Core", elementType = "appender", printObject = true)
 public class Log4j2EmAgentAppender extends AbstractAppender {
-    public static final Logger logger;
+    private static final Logger logger;
     private static boolean logConfig = false;
-    public String sourceIp;
-    public String appName;
+    private String sourceIp;
+    private String appName;
     private boolean writeLogLocation = true;
     private boolean debug = false;
     private FlumeAgentConfig flumeAgentConfig;
@@ -80,7 +80,7 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
         synchronized (clazz) {
             Log4j2AgentConfiguration log4j2AgentConfiguration = new Log4j2AgentConfiguration();
             Map<String, String> conf = log4j2AgentConfiguration.configure(this.getName(), this.flumeAgentConfig);
-            String agentName = (String)conf.get("agent.name");
+            String agentName = conf.get("agent.name");
             conf.remove("agent.name");
             conf.remove("lcd");
             this.agent = new EmbeddedAgent(agentName);

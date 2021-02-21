@@ -29,7 +29,7 @@ public abstract class AbstractConfiguration {
     }
 
     protected Map<String, String> doConfigure() {
-        Map<String, String> conf = new HashMap(8);
+        Map<String, String> conf = new HashMap<>(8);
         conf.putAll(this.getCollectChannelConf(flumeAgentConfig.getChannel()));
         conf.putAll(this.getCollectSinkConf(flumeAgentConfig.getSink()));
         conf.put("agent.name", this.getName());
@@ -38,7 +38,7 @@ public abstract class AbstractConfiguration {
     }
 
     private Map<String, String> getCollectChannelConf(FlumeChannel channel) {
-        Map<String, String> conf = new HashMap(8);
+        Map<String, String> conf = new HashMap<>(8);
         conf.put("channel.type", "file");
         conf.put("channel.capacity", String.valueOf(channel.getLocal_cache_capacity()));
         conf.put("channel.minimumRequiredSpace", String.valueOf(channel.getLocal_cache_min_storage_space()));
@@ -81,7 +81,7 @@ public abstract class AbstractConfiguration {
     }
 
     private Map<String, String> getCollectSinkConf(FlumeSink sink) {
-        Map<String, String> conf = new HashMap(8);
+        Map<String, String> conf = new HashMap<>(8);
         String[] serverArr = StringUtils.split(sink.getServers(), ',');
         int totalServer = serverArr.length;
         String[] sinkArr = new String[totalServer];
