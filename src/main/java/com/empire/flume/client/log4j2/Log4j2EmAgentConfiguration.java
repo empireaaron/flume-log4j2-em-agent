@@ -6,7 +6,7 @@ import java.util.Map;
  * @author aaron.xu
  * @date 2021/2/21
  */
-public class Log4j2AgentConfiguration extends AbstractConfiguration {
+public class Log4j2EmAgentConfiguration extends AbstractConfiguration {
 
     @Override
     protected Map<String, String> collectSpecificChannelConf() {

@@ -78,8 +78,8 @@ public class Log4j2EmAgentAppender extends AbstractAppender {
     public void start() {
         Class clazz = Log4j2EmAgentAppender.class;
         synchronized (clazz) {
-            Log4j2AgentConfiguration log4j2AgentConfiguration = new Log4j2AgentConfiguration();
-            Map<String, String> conf = log4j2AgentConfiguration.configure(this.getName(), this.flumeAgentConfig);
+            Log4j2EmAgentConfiguration log4j2EmAgentConfiguration = new Log4j2EmAgentConfiguration();
+            Map<String, String> conf = log4j2EmAgentConfiguration.configure(this.getName(), this.flumeAgentConfig);
             String agentName = conf.get("agent.name");
             conf.remove("agent.name");
             conf.remove("lcd");
